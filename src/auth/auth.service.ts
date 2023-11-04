@@ -21,17 +21,7 @@ export class AuthService {
     const hashPassword: string =
       await this.usersService.hashedPassword(password);
 
-    // const accesstoken = existingUser["accessToken"]
-    // console.log('asdfghjkl',accesstoken)// взять данные токена id и сравнить с токеном из бд?
-    // const accessTokenDecode = this.jwtService.decode(accesstoken)
-    // console.log(accessTokenDecode["id"])
-    // получить id от юзера  и сравнить его с id из токена бд или из самой бд? Сделать через guard?
-
-    if (!existingUser) {
-      throw new BadRequestException();
-    }
-
-    if (!passwordMatches) {
+    if (!existingUser || !passwordMatches) {
       throw new BadRequestException();
     }
 
@@ -40,11 +30,15 @@ export class AuthService {
       login,
       hashPassword,
     );
+
+    console.log('tokens');
+
     await this.usersService.updateRefreshToken(
       existingUser['_id'],
       login,
       tokens['refreshToken'],
     );
+
     return tokens;
   }
 }

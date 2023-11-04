@@ -26,8 +26,10 @@ export class UserController {
         })
         .send({ status: 'Ok' })
         .status(200);
+      return;
     } catch (e: unknown) {
       res.send({ status: 'Forbidden' }).status(403);
+      return;
     }
   }
 }

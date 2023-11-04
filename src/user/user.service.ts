@@ -5,6 +5,7 @@ import mongoose, { Model } from 'mongoose';
 import { UserDto } from './user-dto/user.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { TokenObjectType, UserObjectType } from '../types/user';
 
 @Injectable()
 export class UserService {
@@ -14,19 +15,18 @@ export class UserService {
     private jwtService: JwtService,
   ) {}
 
-  async getUserByLogin(login: string): Promise<object> {
-    return this.userSchema.findOne({ login });
+  async getUserByLogin(login: string): Promise<UserObjectType> {
+    // добавить UserObjectType =>
+    return this.userSchema.findOne({ login }); //  Не указал тип для массива(он пустой и вылезает ошибка)
   }
-
   async hashedPassword(password: string): Promise<string> {
     return await bcrypt.hash(password, 10);
   }
-
   async getTokens(
     id: string,
     login: string,
     hashPassword: string,
-  ): Promise<object> {
+  ): Promise<TokenObjectType> {
     const accessToken: string = await this.jwtService.signAsync(
       { id, login, hashPassword },
       { secret: process.env.ACCESS_SERET_KEY, expiresIn: '1h' },
@@ -48,7 +48,7 @@ export class UserService {
     });
   }
 
-  async signUp(userdDto: UserDto): Promise<object> {
+  async signUp(userdDto: UserDto): Promise<TokenObjectType> {
     const { login, name, family, middleName, phone, email, password } =
       userdDto;
     const id: string = new mongoose.Types.ObjectId().toString();
