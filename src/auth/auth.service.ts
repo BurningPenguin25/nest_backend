@@ -31,8 +31,6 @@ export class AuthService {
       hashPassword,
     );
 
-    console.log('tokens');
-
     await this.usersService.updateRefreshToken(
       existingUser['_id'],
       login,

@@ -45,6 +45,7 @@ export class AuthController {
         return res.status(409).send({ status: 'Неверный логин или пароль' });
       }
       return res.status(500).send('Unknown server error');
+
     }
   }
 }

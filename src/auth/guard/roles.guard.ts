@@ -12,32 +12,29 @@ export class RolesGuard implements CanActivate {
     private userService: UserService,
   ) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    // булевое значение
 
     try {
       const userRoles = this.reflector.getAllAndOverride(ROLES_KEY, [
-        //с указанная роль на вход
         context.getHandler(),
         context.getClass(),
       ]);
 
       if (!userRoles) {
-        return true;
+        return true
       }
 
-      //  проверка ролей по токену (если будет необходимо)
       const contextRole = context.switchToHttp().getRequest();
       const accessTokenDecode = this.jwtService.decode(
         contextRole.cookies.accessToken,
       );
+
       // console.log(accessTokenDecode['roles']) // Admin
       //  return userData.roles.some( role => userRoles.includes(role))
 
-      //  проверка роли по БД
       const userData = await this.userService.getUserByLogin(
         contextRole.body.login,
-      ); //userData.roles из БД
-      return userData.roles.some((role) => userRoles.includes(role)); // перебираем в массиве role из БД
+      );
+      return userData.roles.some((role) => userRoles.includes(role)); // в массиве Ролей в БД должно быть что-то, но не должен быть пустым
     } catch (e) {
       console.log(e);
     }

@@ -4,6 +4,7 @@ import { UserController } from './user.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from './user.model';
 import { JwtService } from '@nestjs/jwt';
+import { ArticleSchema } from '../article/article.model'
 
 @Module({
   controllers: [UserController], //**

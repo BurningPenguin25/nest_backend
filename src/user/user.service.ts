@@ -29,11 +29,11 @@ export class UserService {
   ): Promise<TokenObjectType> {
     const accessToken: string = await this.jwtService.signAsync(
       { id, login, hashPassword },
-      { secret: process.env.ACCESS_SERET_KEY, expiresIn: '1h' },
+      { secret: process.env.ACCESS_KEY, expiresIn: '1h' },
     );
     const refreshToken: string = await this.jwtService.signAsync(
       { id, login, hashPassword },
-      { secret: process.env.REFRESH_SERET_KEY, expiresIn: '7d' },
+      { secret: process.env.REFRESH_KEY, expiresIn: '7d' },
     );
     return { accessToken, refreshToken };
   }
